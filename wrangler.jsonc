@@ -1,0 +1,14 @@
+// Cloudflare Workers static assets: serves the Astro build in dist/ with no Worker script.
+// Built and deployed by Workers Builds (Cloudflare's Git integration). See docs/deployment.md.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "santese-io",
+  "compatibility_date": "2026-11-27",
+  "assets": {
+    "directory": "./dist/",
+    // /notes/index.html is served at /notes/; /notes redirects there.
+    "html_handling": "auto-trailing-slash",
+    // Unmatched paths get dist/404.html with a 404 status.
+    "not_found_handling": "404-page",
+  },
+}

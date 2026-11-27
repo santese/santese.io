@@ -26,3 +26,6 @@ pnpm-debug.log*
 # private note drafts (previewed by `pnpm dev` only; move to src/content/notes/ to publish)
 src/content/drafts/*
 !src/content/drafts/.gitkeep
+
+# wrangler local state
+.wrangler/

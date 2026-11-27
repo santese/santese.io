@@ -18,16 +18,17 @@ pnpm dev          # http://localhost:4321
 
 Package scripts can be run with `pnpm <script>` or `pnpm exec vp run <script>`.
 
-| Command                  | What it does                                       |
-| ------------------------ | -------------------------------------------------- |
-| `pnpm exec vp run dev`   | Start the Astro dev server                         |
-| `pnpm exec vp run build` | Build the static site into `dist/` (Astro)         |
-| `pnpm preview`           | Serve the built `dist/` locally                    |
-| `pnpm check`             | Astro diagnostics and type-check (`astro check`)   |
-| `pnpm test`              | Unit tests for the publishing rules (`vp test`)    |
-| `pnpm verify:build`      | After a build, fail if a draft leaked into `dist/` |
-| `pnpm lint`              | Check formatting and lint (`vp check`)             |
-| `pnpm fix`               | Format files and apply lint fixes                  |
+| Command                  | What it does                                        |
+| ------------------------ | --------------------------------------------------- |
+| `pnpm exec vp run dev`   | Start the Astro dev server                          |
+| `pnpm exec vp run build` | Build the static site into `dist/` (Astro)          |
+| `pnpm preview`           | Serve the built `dist/` locally                     |
+| `pnpm check`             | Astro diagnostics and type-check (`astro check`)    |
+| `pnpm test`              | Unit tests for the publishing rules (`vp test`)     |
+| `pnpm verify:build`      | After a build, fail if a draft leaked into `dist/`  |
+| `pnpm lint`              | Check formatting and lint (`vp check`)              |
+| `pnpm deploy:dry-run`    | After a build, validate `wrangler.jsonc` (no login) |
+| `pnpm fix`               | Format files and apply lint fixes                   |
 
 If you have the global Vite+ CLI installed, `vp run dev` and `vp run build` work too. Nothing requires it.
 
@@ -39,11 +40,13 @@ If you have the global Vite+ CLI installed, `vp run dev` and `vp run build` work
 - **Tests** use the Vitest bundled with Vite+ (`vp test`), so there's no separate test dependency. Tests import only plain TypeScript modules (`src/lib/notes.ts`, `src/lib/note-schema.ts`) and never load Astro, which keeps them independent of Astro's Vite.
 - **Astro formatting** goes through Oxfmt's bundled Prettier Astro plugin (`fmt.astro: true`), which needs the `@astrojs/compiler-rs` devDependency. Oxlint lints only the script parts of `.astro` files; `astro check` covers templates and types.
 - **Editor:** install the recommended extensions (`.vscode/extensions.json`). `.vscode/settings.json` sets Oxc as the formatter, with format on save.
-- **CI** (`.github/workflows/ci.yml`) runs `vp check`, `astro check`, the unit tests, the production build and the draft-leak check on pushes to `main` and on pull requests.
+- **Wrangler** is a pinned devDependency, used only for the deploy dry run, local `wrangler dev` and Workers Builds. `pnpm-workspace.yaml` blocks the build scripts of `esbuild` and `workerd`, which nothing here needs.
+- **CI** (`.github/workflows/ci.yml`) runs `vp check`, `astro check`, the unit tests, the production build, the draft-leak check and a Wrangler dry run on pushes to `main` and on pull requests.
 
 ## Structure
 
 ```text
+docs/                deployment.md (Cloudflare setup, DNS safety, launch checklist)
 public/              favicon.svg, robots.txt
 scripts/             check-build.mjs (draft-leak and private-detail check over dist/)
 src/
@@ -116,7 +119,9 @@ Never put IP addresses, VLAN IDs, hostnames, ports, serial numbers, MAC addresse
 
 ## Deployment
 
-The plan is Cloudflare Pages static hosting through Git integration, under the Cloudflare account **santese@santese.io**. Build command `pnpm build` (plain `astro build`, so no global Vite+ CLI is needed), output directory `dist`. Node comes from `.nvmrc` and pnpm from `packageManager`. The full setup and the DNS/Google Workspace safety steps come in a later phase. Nothing has been deployed yet.
+The site is served by [Cloudflare Workers static assets](https://developers.cloudflare.com/workers/static-assets/) from the owner's Cloudflare account. It's an assets-only Worker with no script, configured in `wrangler.jsonc`. Workers Builds, Cloudflare's Git integration, builds and deploys `main`, and uploads a preview version for other branches. GitHub Actions runs the checks only and holds no Cloudflare credentials.
+
+The setup steps, DNS and Google Workspace safety steps, launch checklist and rollback are in [docs/deployment.md](docs/deployment.md). Nothing has been deployed yet.
 
 ## Contributing rules
 
