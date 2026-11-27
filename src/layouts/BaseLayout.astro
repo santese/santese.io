@@ -1,4 +1,6 @@
 ---
+import '@fontsource-variable/geist/wght.css';
+import '@fontsource-variable/geist-mono/wght.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -23,6 +25,7 @@ const {
 
 const pageTitle = title ? `${title} · ${site.domain}` : `${site.title} · ${site.domain}`;
 const canonicalURL = new URL(Astro.url.pathname, site.url).href;
+const ogImageURL = new URL(site.brand.ogImage, site.url).href;
 ---
 
 <!doctype html>
@@ -38,13 +41,24 @@ const canonicalURL = new URL(Astro.url.pathname, site.url).href;
       } catch {}
     </script>
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#181715" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="theme-color"
+      content={site.brand.themeColorLight}
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content={site.brand.themeColorDark}
+      media="(prefers-color-scheme: dark)"
+    />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonicalURL} />}
     {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -58,7 +72,11 @@ const canonicalURL = new URL(Astro.url.pathname, site.url).href;
     <meta property="og:title" content={title ?? site.title} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonicalURL} />}
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={site.brand.ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div class="site">

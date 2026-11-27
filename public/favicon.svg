@@ -1,12 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <style>
-    rect { fill: #1c1a17; }
-    text { fill: #faf8f4; }
-    @media (prefers-color-scheme: dark) {
-      rect { fill: #ece8e1; }
-      text { fill: #1c1a17; }
-    }
-  </style>
-  <rect width="32" height="32" rx="6" />
-  <text x="16" y="23" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="22" font-weight="600">s</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96"><rect width="96" height="96" fill="#141414"/><g transform="translate(9 12)"><path d="M60 10H24L8 26V30L14 36H54L60 42V46L44 62H8" fill="none" stroke="#F2EFE8" stroke-width="8" stroke-linejoin="bevel" stroke-linecap="butt"/><rect x="62" y="58" width="8" height="8" fill="#A78BFA"/></g></svg>

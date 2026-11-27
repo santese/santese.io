@@ -4,7 +4,7 @@ These rules apply to any AI coding agent working in this repository (CLAUDE.md p
 
 ## What this site is
 
-A small static personal engineering site for Santese: introduction, notes, and a homelab journal. Astro static output, TypeScript strict, plain CSS. No database, auth, CMS, server runtime, client framework, external fonts, analytics or tracking.
+A small static personal engineering site for Santese: introduction, notes, and a homelab journal. Astro static output, TypeScript strict, plain CSS. No database, auth, CMS, server runtime, client framework, third-party font requests, analytics or tracking. Fonts (Geist, Geist Mono) are self-hosted from npm `@fontsource-variable` packages.
 
 ## Rules
 
@@ -14,7 +14,7 @@ A small static personal engineering site for Santese: introduction, notes, and a
 - **Privacy.** Never publish IP addresses, VLAN IDs, internal hostnames, ports, serial numbers, device identifiers, credentials, VPN endpoints, private management URLs, physical layout, or proprietary Superendpoint/employer details. Strip EXIF from photos.
 - **Single source of truth.** Personal metadata and links live in `src/data/site.ts`; homelab inventory lives in `src/data/homelab.ts`. Don't hardcode those values in components.
 - **Navigation** only links to routes that exist. No empty sections or placeholder links.
-- **Design.** Editorial and understated: single column, system fonts, warm off-white / near-black, one accent. No gradients, glassmorphism, decorative cards, pill clouds, fake terminals, stock images or generic hero layouts. Keep client-side JavaScript to concrete needs (currently only the theme toggle, inlined, no framework).
+- **Design.** Editorial and understated: single column, Geist for text and Geist Mono for code, metadata and technical labels, Bone background / Carbon text, one accent (violet on light, lavender on dark) used sparingly for links, focus, punctuation and diagrams. Brand colours are defined once at the top of `src/styles/global.css`; logos and favicons come from the official brand kit in `public/`. Keep the horizontal logo at least 120px wide. No gradients, glassmorphism, decorative cards, pill clouds, fake terminals, stock images or generic hero layouts. Keep client-side JavaScript to concrete needs (currently only the theme toggle, inlined, no framework).
 - **URLs.** Production site is `https://santese.io` with trailing slashes on every route. Keep slugs stable.
 - **Verify** with `pnpm lint`, `pnpm check`, `pnpm test`, `pnpm build` and `pnpm verify:build` before reporting work as done. Report real results only.
 - **Homelab.** `src/data/homelab.ts` lists only real, owner-confirmed equipment, services and experiment statuses. Anything unconfirmed goes in with `verified: false` (dev only). Don't invent specs or mark experiments in progress or completed without the owner saying so.

@@ -4,6 +4,7 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "santese-io",
   "compatibility_date": "2026-11-27",
+  "previews": {},
   "assets": {
     "directory": "./dist/",
     // /notes/index.html is served at /notes/; /notes redirects there.
