@@ -47,14 +47,14 @@ If you have the global Vite+ CLI installed, `vp run dev` and `vp run build` work
 
 ```text
 docs/                deployment.md (Cloudflare setup, DNS safety, launch checklist)
-public/              favicon.svg, robots.txt
+public/              brand kit assets (logos in brand/, favicons, manifest, og-image.png), robots.txt
 scripts/             check-build.mjs (draft-leak and private-detail check over dist/)
 src/
-  components/        Header, Footer, NoteList, NetworkTree, ThemeToggle (light/dark, saved in localStorage)
+  components/        Header, Footer, NoteList, NetworkDiagram (SVG) + NetworkTree, ThemeToggle (light/dark, saved in localStorage)
   content/notes/     published notes, one Markdown file each; the file name is the URL slug
   content/drafts/    private drafts (gitignored, dev server only)
   content.config.ts  notes and drafts collections (glob loader + shared schema)
-  data/site.ts       name, description, nav, social links, featured project, feed path
+  data/site.ts       name, description, nav, social links, featured project, feed path, brand assets
   data/homelab.ts    homelab hardware, services, network overview, experiments
   layouts/           BaseLayout (metadata, skip link, header/footer), NoteLayout
   lib/               notes.ts (publishing rules), note-schema.ts, collection.ts (Astro wrapper),

@@ -12,8 +12,15 @@ const current = (href: string) => {
 
 <header class="site-header">
   <div class="container inner">
-    <a class="wordmark" href="/" aria-current={path === '/' ? 'page' : undefined}>
-      {site.domain}
+    <a class="logo" href="/" aria-current={path === '/' ? 'page' : undefined}>
+      <img
+        class="logo-light"
+        src={site.brand.logoLight}
+        alt={site.domain}
+        width="128"
+        height="30"
+      />
+      <img class="logo-dark" src={site.brand.logoDark} alt={site.domain} width="128" height="30" />
     </a>
     <div class="end">
       {site.nav.length > 0 && (
@@ -54,10 +61,42 @@ const current = (href: string) => {
     gap: var(--space-4);
   }
 
-  .wordmark {
-    font-weight: 650;
-    letter-spacing: -0.01em;
+  /* Horizontal logo, 306:72. 128px wide keeps it above the brand minimum of 120px. */
+  .logo {
+    display: inline-flex;
     text-decoration: none;
+  }
+
+  .logo img {
+    width: 128px;
+    height: auto;
+  }
+
+  /* One logo per theme; mirrors the theme selectors in global.css. */
+  .logo-light {
+    display: block;
+  }
+
+  .logo-dark {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .logo-light {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .logo-dark {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .logo-light {
+      display: none;
+    }
+
+    :global(:root:not([data-theme='light'])) .logo-dark {
+      display: block;
+    }
   }
 
   ul {

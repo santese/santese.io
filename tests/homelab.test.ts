@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vite-plus/test';
 import { homelab } from '../src/data/homelab';
-import { groupServices, relatedNoteHref, statusLabel, visibleItems } from '../src/lib/homelab';
+import {
+  groupServices,
+  layoutNetwork,
+  networkLayout,
+  relatedNoteHref,
+  statusLabel,
+  visibleItems,
+} from '../src/lib/homelab';
 
 const items = [
   { name: 'confirmed', verified: true },
@@ -48,6 +55,48 @@ describe('groupServices', () => {
       { name: 'c', category: 'core' as const },
     ]);
     expect(groups.map((g) => g.label)).toEqual(['Core', 'Build and testing']);
+  });
+});
+
+describe('layoutNetwork', () => {
+  const tree = {
+    label: 'root',
+    children: [{ label: 'a', children: [{ label: 'a1' }] }, { label: 'b' }],
+  };
+  const { rows, width, height, labelX } = layoutNetwork(tree);
+
+  it('lays nodes out in preorder with depth and parent links', () => {
+    expect(rows.map((r) => [r.label, r.depth, r.parent])).toEqual([
+      ['root', 0, undefined],
+      ['a', 1, 0],
+      ['a1', 2, 1],
+      ['b', 1, 0],
+    ]);
+  });
+
+  it('puts each row below the last and indents children', () => {
+    for (let i = 1; i < rows.length; i++) {
+      expect(rows[i]!.y).toBeGreaterThan(rows[i - 1]!.y);
+      const parent = rows[rows[i]!.parent!]!;
+      expect(rows[i]!.x).toBeGreaterThan(parent.x);
+    }
+  });
+
+  it('sizes the canvas to fit every row and label', () => {
+    expect(height).toBe(networkLayout.padding * 2 + rows.length * networkLayout.rowHeight);
+    for (const row of rows) {
+      expect(labelX(row) + row.label.length * networkLayout.charWidth).toBeLessThanOrEqual(width);
+    }
+  });
+
+  it('includes every node from the homelab data', () => {
+    const labels: string[] = [];
+    const collect = (n: typeof homelab.network) => {
+      labels.push(n.label);
+      n.children?.forEach(collect);
+    };
+    collect(homelab.network);
+    expect(layoutNetwork(homelab.network).rows.map((r) => r.label)).toEqual(labels);
   });
 });
 

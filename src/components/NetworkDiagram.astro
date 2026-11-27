@@ -1,0 +1,75 @@
+---
+// Network overview drawn as an inline SVG from homelab.network. The SVG is decorative; the
+// nested list (visually hidden) carries the same hierarchy for assistive technology.
+import type { NetworkNode } from '../data/homelab';
+import { layoutNetwork, networkLayout } from '../lib/homelab';
+import NetworkTree from './NetworkTree.astro';
+
+interface Props {
+  root: NetworkNode;
+}
+
+const { root } = Astro.props;
+const { rows, width, height, labelX } = layoutNetwork(root);
+const { marker, fontSize } = networkLayout;
+const half = marker / 2;
+---
+
+<svg
+  class="network-diagram"
+  viewBox={`0 0 ${width} ${height}`}
+  width={width}
+  height={height}
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="links">
+    {rows.map((row) => {
+      if (row.parent === undefined) return null;
+      const parent = rows[row.parent]!;
+      return <path d={`M${parent.x} ${parent.y + half}V${row.y}H${row.x - half}`} />;
+    })}
+  </g>
+  {rows.map((row) => (
+    <g class:list={['node', { root: row.parent === undefined }]}>
+      <rect x={row.x - half} y={row.y - half} width={marker} height={marker} />
+      <text x={labelX(row)} y={row.y} font-size={fontSize} dominant-baseline="central">
+        {row.label}
+      </text>
+    </g>
+  ))}
+</svg>
+<div class="visually-hidden">
+  <NetworkTree nodes={[root]} />
+</div>
+
+<style>
+  .network-diagram {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .links path {
+    fill: none;
+    stroke: var(--color-line);
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+  .node rect {
+    fill: var(--color-accent);
+    shape-rendering: crispEdges;
+  }
+
+  .node.root rect {
+    fill: var(--color-bg);
+    stroke: var(--color-accent);
+    stroke-width: 1.5;
+  }
+
+  .node text {
+    fill: var(--color-text);
+    font-family: var(--font-mono);
+  }
+</style>

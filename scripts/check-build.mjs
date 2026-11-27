@@ -76,6 +76,13 @@ for (const required of [
   'rss.xml',
   'sitemap-index.xml',
   '404.html',
+  'favicon.svg',
+  'favicon.ico',
+  'apple-touch-icon.png',
+  'site.webmanifest',
+  'og-image.png',
+  'brand/horizontal-light.svg',
+  'brand/horizontal-dark.svg',
 ]) {
   if (!existsSync(join(dist, required))) problems.push(`missing dist/${required}`);
 }

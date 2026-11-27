@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import NetworkTree from '../components/NetworkTree.astro';
+import NetworkDiagram from '../components/NetworkDiagram.astro';
 import { homelab } from '../data/homelab';
 import { getPublishedNotes } from '../lib/collection';
 import { groupServices, relatedNoteHref, statusLabel, visibleItems } from '../lib/homelab';
@@ -80,7 +80,7 @@ const lastReviewed = homelab.lastReviewed
   <section aria-labelledby="network-heading">
     <h2 id="network-heading">Network</h2>
     <figure>
-      <NetworkTree nodes={[homelab.network]} />
+      <NetworkDiagram root={homelab.network} />
       <figcaption class="muted">A conceptual overview, not a wiring map.</figcaption>
     </figure>
   </section>

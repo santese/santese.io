@@ -16,6 +16,15 @@ export const site = {
   description:
     'Santese works across software engineering, IT infrastructure, and security. Notes and a homelab journal.',
   locale: 'en',
+  // Brand kit assets, served from public/.
+  brand: {
+    logoLight: '/brand/horizontal-light.svg',
+    logoDark: '/brand/horizontal-dark.svg',
+    ogImage: '/og-image.png',
+    ogImageAlt: 'The santese.io logo: a geometric S beside the word santese.io.',
+    themeColorLight: '#f2efe8',
+    themeColorDark: '#141414',
+  },
   featuredProject: {
     name: 'Superendpoint',
     href: 'https://superendpoint.com/',
