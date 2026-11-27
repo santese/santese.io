@@ -20,8 +20,11 @@ export const site = {
     name: 'Superendpoint',
     href: 'https://superendpoint.com/',
   },
-  // Only list routes that exist. Homelab is added in a later phase.
-  nav: [{ label: 'Notes', href: '/notes/' }] as NavItem[],
+  // Only list routes that exist.
+  nav: [
+    { label: 'Notes', href: '/notes/' },
+    { label: 'Homelab', href: '/homelab/' },
+  ] as NavItem[],
   feed: '/rss.xml',
   social: [
     { label: 'GitHub', href: 'https://github.com/santese' },

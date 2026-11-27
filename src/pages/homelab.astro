@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NetworkTree from '../components/NetworkTree.astro';
+import { homelab } from '../data/homelab';
+import { getPublishedNotes } from '../lib/collection';
+import { groupServices, relatedNoteHref, statusLabel, visibleItems } from '../lib/homelab';
+import { formatDate, toISODate } from '../lib/notes';
+
+const dev = import.meta.env.DEV;
+const hardware = visibleItems(homelab.hardware, { dev });
+const serviceGroups = groupServices(visibleItems(homelab.services, { dev }));
+const experiments = visibleItems(homelab.experiments, { dev });
+const publishedIds = new Set((await getPublishedNotes()).map((n) => n.id));
+const lastReviewed = homelab.lastReviewed
+  ? new Date(`${homelab.lastReviewed}T00:00:00Z`)
+  : undefined;
+---
+
+<BaseLayout
+  title="Homelab"
+  description="The hardware, services and experiments in my homelab: repurposed enterprise gear and everyday computers for media, development and testing."
+>
+  <h1>Homelab</h1>
+  <p class="lede">{homelab.intro}</p>
+  {lastReviewed && (
+    <p class="meta">
+      Last reviewed <time datetime={toISODate(lastReviewed)}>{formatDate(lastReviewed)}</time>
+    </p>
+  )}
+
+  {hardware.length > 0 && (
+    <section aria-labelledby="hardware-heading">
+      <h2 id="hardware-heading">Hardware</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Hardware</th>
+              <th scope="col">Role</th>
+              <th scope="col">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hardware.map((item) => (
+              <tr>
+                <th scope="row">
+                  {item.name}
+                  {!item.verified && <span class="unverified">Unverified</span>}
+                </th>
+                <td>{item.role}</td>
+                <td>{item.details?.join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  {serviceGroups.length > 0 && (
+    <section aria-labelledby="services-heading">
+      <h2 id="services-heading">Services</h2>
+      {serviceGroups.map((group) => (
+        <>
+          <h3>{group.label}</h3>
+          <ul class="plain">
+            {group.services.map((service) => (
+              <li>
+                {service.href ? <a href={service.href}>{service.name}</a> : service.name}
+                <span class="muted"> · {service.purpose}</span>
+                {!service.verified && <span class="unverified">Unverified</span>}
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </section>
+  )}
+
+  <section aria-labelledby="network-heading">
+    <h2 id="network-heading">Network</h2>
+    <figure>
+      <NetworkTree nodes={[homelab.network]} />
+      <figcaption class="muted">A conceptual overview, not a wiring map.</figcaption>
+    </figure>
+  </section>
+
+  {experiments.length > 0 && (
+    <section aria-labelledby="experiments-heading">
+      <h2 id="experiments-heading">Experiments</h2>
+      <ul class="experiments plain">
+        {experiments.map((experiment) => {
+          const href = relatedNoteHref(experiment.noteSlug, publishedIds);
+          return (
+            <li>
+              <h3 class="title">
+                {href ? <a href={href}>{experiment.title}</a> : experiment.title}
+                {!experiment.verified && <span class="unverified">Unverified</span>}
+              </h3>
+              <p class="meta">{statusLabel(experiment.status)}</p>
+              <p class="summary">{experiment.summary}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .plain {
+    list-style: none;
+    padding: 0;
+  }
+
+  .plain li + li {
+    margin-top: var(--space-2);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figcaption {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .experiments li {
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .experiments li:first-child {
+    padding-top: 0;
+  }
+
+  .experiments li + li {
+    margin-top: 0;
+  }
+
+  .experiments .title {
+    margin: 0;
+    font-size: var(--text-base);
+  }
+
+  .experiments .meta,
+  .experiments .summary {
+    margin: var(--space-1) 0 0;
+  }
+
+  .unverified {
+    margin-left: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+</style>

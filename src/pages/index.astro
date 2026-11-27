@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NoteList from '../components/NoteList.astro';
 import { site } from '../data/site';
+import { homelab } from '../data/homelab';
 import { getPublishedNotes } from '../lib/collection';
 
 const recentNotes = (await getPublishedNotes()).slice(0, 3);
@@ -24,11 +25,19 @@ const recentNotes = (await getPublishedNotes()).slice(0, 3);
     <section aria-labelledby="notes-heading">
       <h2 id="notes-heading">Recent notes</h2>
       <NoteList notes={recentNotes} headingLevel="h3" />
-      <p class="all-notes">
+      <p class="more">
         <a href="/notes/">All notes</a>
       </p>
     </section>
   )}
+
+  <section aria-labelledby="homelab-heading">
+    <h2 id="homelab-heading">Homelab</h2>
+    <p>{homelab.intro}</p>
+    <p class="more">
+      <a href="/homelab/">What's in the homelab</a>
+    </p>
+  </section>
 
   {site.social.length > 0 && (
     <section aria-labelledby="elsewhere-heading">
@@ -48,7 +57,7 @@ const recentNotes = (await getPublishedNotes()).slice(0, 3);
 </BaseLayout>
 
 <style>
-  .all-notes {
+  .more {
     margin-top: var(--space-4);
     font-size: var(--text-sm);
   }

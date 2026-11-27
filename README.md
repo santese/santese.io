@@ -45,16 +45,18 @@ If you have the global Vite+ CLI installed, `vp run dev` and `vp run build` work
 
 ```text
 public/              favicon.svg, robots.txt
-scripts/             check-build.mjs (draft-leak check over dist/)
+scripts/             check-build.mjs (draft-leak and private-detail check over dist/)
 src/
-  components/        Header, Footer, NoteList, ThemeToggle (light/dark, saved in localStorage)
+  components/        Header, Footer, NoteList, NetworkTree, ThemeToggle (light/dark, saved in localStorage)
   content/notes/     published notes, one Markdown file each; the file name is the URL slug
   content/drafts/    private drafts (gitignored, dev server only)
   content.config.ts  notes and drafts collections (glob loader + shared schema)
   data/site.ts       name, description, nav, social links, featured project, feed path
+  data/homelab.ts    homelab hardware, services, network overview, experiments
   layouts/           BaseLayout (metadata, skip link, header/footer), NoteLayout
-  lib/               notes.ts (publishing rules), note-schema.ts, collection.ts (Astro wrapper)
-  pages/             index, 404, notes/index, notes/[...slug], rss.xml
+  lib/               notes.ts (publishing rules), note-schema.ts, collection.ts (Astro wrapper),
+                     homelab.ts (homelab display rules)
+  pages/             index, 404, homelab, notes/index, notes/[...slug], rss.xml
   styles/global.css  design tokens, base and prose styles
 tests/               unit tests (vp test)
 ```
@@ -98,6 +100,19 @@ Run `pnpm dev` and open `/notes/`. The dev server lists everything in `drafts/` 
 A note in `notes/` is public when `publishedAt` is today or earlier, judged at build time. To hold back a note that's already in `notes/` (and committed), add `draft: true`. Held-back and future-dated notes behave like drafts: dev only. The site is static, so a future-dated note only goes live with the first build on or after its date (any push, or a manual redeploy). Publication rules live in `src/lib/notes.ts` and apply to the homepage, notes index, note pages, RSS and sitemap.
 
 Anything committed in `notes/` is readable in the repository even if it's held back or future-dated, so if the repo is public, keep unfinished writing in `drafts/`. That folder lives only on your machine, so back it up some other way if you need to.
+
+## Homelab
+
+`/homelab/` is a hand-maintained snapshot, not a live dashboard. All of its content lives in `src/data/homelab.ts`, so you never need to touch `src/pages/homelab.astro` to update it.
+
+- **Hardware**: `name`, `role`, and optional `details` (known specs only, e.g. `'Intel Core i9'`). Leave out what you don't know. Empty fields don't render.
+- **Services**: `name`, `purpose`, `category` (`core`, `media` or `build`), and an optional `href` to the project's official public site. Never link a management interface.
+- **Network**: a conceptual tree of labels. It isn't a wiring map, so keep it at the level of roles.
+- **Experiments**: `title`, `summary`, `status` (`planned`, `in-progress` or `completed`), and an optional `noteSlug`. The experiment links to that note only once the note is published, so a draft is never linked.
+- **`verified`**: every entry has one. `verified: false` entries show in `pnpm dev` with an "Unverified" label and stay out of production builds. Add new things as unverified, check them, then flip the flag.
+- **`lastReviewed`**: a `YYYY-MM-DD` date you set by hand when you've checked the whole inventory. Remove it to hide the line.
+
+Never put IP addresses, VLAN IDs, hostnames, ports, serial numbers, MAC addresses, VPN endpoints or physical layout in this file. `pnpm test` checks the data and `pnpm verify:build` checks the built site for private IPs, MAC addresses and `.local`/`.lan` hostnames, but those checks don't catch everything, so review before committing. Strip EXIF data from any photos you add.
 
 ## Deployment
 
