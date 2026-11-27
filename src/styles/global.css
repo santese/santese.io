@@ -266,6 +266,45 @@ video {
   height: auto;
 }
 
+/* Long-form note content */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose li + li {
+  margin-top: var(--space-1);
+}
+
+.prose blockquote {
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+/* Markdown tables aren't wrapped, so let them scroll on their own */
+.prose table {
+  display: block;
+  overflow-x: auto;
+}
+
+/*
+ * Syntax highlighting (Shiki dual themes). Spans carry light colours inline and
+ * --shiki-dark for dark mode. Keep the page's own code background in both themes.
+ */
+.astro-code {
+  background-color: var(--color-subtle-bg) !important;
+}
+
+:root[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .astro-code span {
+    color: var(--shiki-dark) !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

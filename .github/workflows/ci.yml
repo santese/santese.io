@@ -32,5 +32,11 @@ jobs:
       - name: Astro diagnostics
         run: pnpm exec vp run check
 
+      - name: Unit tests
+        run: pnpm exec vp run test
+
       - name: Production build
         run: pnpm exec vp run build
+
+      - name: Check build for draft leaks
+        run: pnpm exec vp run verify:build

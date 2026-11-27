@@ -16,7 +16,8 @@ A small static personal engineering site for Santese: introduction, notes, and a
 - **Navigation** only links to routes that exist. No empty sections or placeholder links.
 - **Design.** Editorial and understated: single column, system fonts, warm off-white / near-black, one accent. No gradients, glassmorphism, decorative cards, pill clouds, fake terminals, stock images or generic hero layouts. Keep client-side JavaScript to concrete needs (currently only the theme toggle, inlined, no framework).
 - **URLs.** Production site is `https://santese.io` with trailing slashes on every route. Keep slugs stable.
-- **Verify** with `pnpm lint`, `pnpm check` and `pnpm build` before reporting work as done. Report real results only.
+- **Verify** with `pnpm lint`, `pnpm check`, `pnpm test`, `pnpm build` and `pnpm verify:build` before reporting work as done. Report real results only.
+- **Notes.** Published notes live in `src/content/notes/`; private drafts live in the gitignored `src/content/drafts/` and are rendered only by the dev server. Write new drafts there, and never move a file into `notes/` (publishing) unless the owner asks. Publishing rules live in `src/lib/notes.ts`. Use `getPublishedNotes()` for anything always public (homepage, RSS); only note pages and the notes index use `getVisibleNotes()`, which adds drafts in dev.
 
 ## Development
 

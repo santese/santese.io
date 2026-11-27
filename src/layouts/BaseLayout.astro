@@ -10,9 +10,16 @@ interface Props {
   /** Set false for pages that should not declare a canonical URL (e.g. 404). */
   canonical?: boolean;
   noindex?: boolean;
+  ogType?: 'website' | 'article';
 }
 
-const { title, description = site.description, canonical = true, noindex = false } = Astro.props;
+const {
+  title,
+  description = site.description,
+  canonical = true,
+  noindex = false,
+  ogType = 'website',
+} = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.domain}` : `${site.title} · ${site.domain}`;
 const canonicalURL = new URL(Astro.url.pathname, site.url).href;
@@ -38,9 +45,15 @@ const canonicalURL = new URL(Astro.url.pathname, site.url).href;
     {canonical && <link rel="canonical" href={canonicalURL} />}
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.title} · Notes`}
+      href={new URL(site.feed, site.url).href}
+    />
     <meta name="generator" content={Astro.generator} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.domain} />
     <meta property="og:title" content={title ?? site.title} />
     <meta property="og:description" content={description} />

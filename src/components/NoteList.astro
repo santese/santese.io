@@ -1,0 +1,66 @@
+---
+import type { Note } from '../lib/collection';
+import { formatDate, notePath, toISODate } from '../lib/notes';
+
+interface Props {
+  notes: Note[];
+  /** Heading level used for each note title. */
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { notes, headingLevel: Heading = 'h2' } = Astro.props;
+---
+
+<ul class="note-list">
+  {notes.map((note) => (
+    <li>
+      <Heading class="title">
+        <a href={notePath(note.id)}>{note.data.title}</a>
+        {note.data.draft && <span class="draft">Draft</span>}
+      </Heading>
+      <p class="description">{note.data.description}</p>
+      <p class="meta">
+        <time datetime={toISODate(note.data.publishedAt)}>{formatDate(note.data.publishedAt)}</time>
+        {note.data.tags.length > 0 && <span> · {note.data.tags.join(', ')}</span>}
+      </p>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .note-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  li:first-child {
+    padding-top: 0;
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+
+  .description {
+    margin: var(--space-1) 0 0;
+  }
+
+  .meta {
+    margin: var(--space-1) 0 0;
+  }
+
+  .draft {
+    margin-left: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    color: var(--color-accent);
+  }
+</style>
