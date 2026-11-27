@@ -1,0 +1,68 @@
+---
+import type { NetworkNode } from '../data/homelab';
+
+interface Props {
+  nodes: NetworkNode[];
+}
+
+const { nodes } = Astro.props;
+---
+
+<ul class="tree">
+  {nodes.map((node) => (
+    <li>
+      <span class="node">{node.label}</span>
+      {node.children && node.children.length > 0 && <Astro.self nodes={node.children} />}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tree .tree {
+    margin-left: 0.6em;
+    padding-left: var(--space-4);
+  }
+
+  li {
+    position: relative;
+    margin: 0;
+    padding-top: var(--space-1);
+  }
+
+  /* Connector lines: a vertical rule down each child, a short horizontal tick to its label */
+  .tree .tree > li::before,
+  .tree .tree > li::after {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-4));
+    width: calc(var(--space-4) - var(--space-1));
+  }
+
+  .tree .tree > li::before {
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid var(--color-muted);
+  }
+
+  .tree .tree > li::after {
+    top: calc(var(--space-1) + 0.8em);
+    border-top: 1px solid var(--color-muted);
+  }
+
+  /* The last child's vertical rule stops at its tick */
+  .tree .tree > li:last-child::before {
+    bottom: auto;
+    height: calc(var(--space-1) + 0.8em);
+  }
+
+  .node {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+</style>

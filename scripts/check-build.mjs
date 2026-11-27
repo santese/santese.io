@@ -70,13 +70,35 @@ for (const note of hidden) {
   }
 }
 
-for (const required of ['notes/index.html', 'rss.xml', 'sitemap-index.xml', '404.html']) {
+for (const required of [
+  'notes/index.html',
+  'homelab/index.html',
+  'rss.xml',
+  'sitemap-index.xml',
+  '404.html',
+]) {
   if (!existsSync(join(dist, required))) problems.push(`missing dist/${required}`);
 }
 
 for (const { path, text } of outputs) {
   if (path.includes('sitemap') && text.includes('/404'))
     problems.push(`${path} lists the 404 page`);
+}
+
+// Private network details must never be published (see AGENTS.md).
+const privatePatterns = [
+  [
+    'private IPv4 address',
+    /\b(?:10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2})\b/,
+  ],
+  ['MAC address', /\b[0-9a-f]{2}(?::[0-9a-f]{2}){5}\b/i],
+  ['internal hostname', /\b[a-z0-9-]+\.(?:local|lan|internal|home\.arpa)\b/i],
+];
+for (const { path, text } of outputs) {
+  for (const [label, pattern] of privatePatterns) {
+    const hit = text.match(pattern);
+    if (hit) problems.push(`${path} contains a ${label}: "${hit[0]}"`);
+  }
 }
 
 if (problems.length > 0) {
