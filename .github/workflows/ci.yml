@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+# A newer push to the same branch or PR cancels the run it replaces.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     runs-on: ubuntu-24.04
@@ -40,3 +45,7 @@ jobs:
 
       - name: Check build for draft leaks
         run: pnpm exec vp run verify:build
+
+      # Validates wrangler.jsonc against the build output. No Cloudflare credentials.
+      - name: Check Cloudflare config
+        run: pnpm exec vp run deploy:dry-run

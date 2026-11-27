@@ -18,6 +18,7 @@ A small static personal engineering site for Santese: introduction, notes, and a
 - **URLs.** Production site is `https://santese.io` with trailing slashes on every route. Keep slugs stable.
 - **Verify** with `pnpm lint`, `pnpm check`, `pnpm test`, `pnpm build` and `pnpm verify:build` before reporting work as done. Report real results only.
 - **Homelab.** `src/data/homelab.ts` lists only real, owner-confirmed equipment, services and experiment statuses. Anything unconfirmed goes in with `verified: false` (dev only). Don't invent specs or mark experiments in progress or completed without the owner saying so.
+- **Deployment.** Hosting is Cloudflare Workers static assets via Workers Builds; config lives in `wrangler.jsonc`, the runbook in `docs/deployment.md`. Never run a real `wrangler deploy`, log in to Cloudflare, or change DNS, domains or other Cloudflare resources without the owner's explicit approval. `pnpm deploy:dry-run` is fine. Don't name the owner's account email in the repo.
 - **Notes.** Published notes live in `src/content/notes/`; private drafts live in the gitignored `src/content/drafts/` and are rendered only by the dev server. Write new drafts there, and never move a file into `notes/` (publishing) unless the owner asks. Publishing rules live in `src/lib/notes.ts`. Use `getPublishedNotes()` for anything always public (homepage, RSS); only note pages and the notes index use `getVisibleNotes()`, which adds drafts in dev.
 
 ## Development
