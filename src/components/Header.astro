@@ -3,7 +3,11 @@ import { site } from '../data/site';
 import ThemeToggle from './ThemeToggle.astro';
 
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const current = (href: string) => {
+  if (path === href) return 'page';
+  if (href !== '/' && path.startsWith(href)) return 'location';
+  return undefined;
+};
 ---
 
 <header class="site-header">
@@ -17,7 +21,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
           <ul>
             {site.nav.map((item) => (
               <li>
-                <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                <a href={item.href} aria-current={current(item.href)}>
                   {item.label}
                 </a>
               </li>
@@ -70,7 +74,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   }
 
   nav a:hover,
-  nav a[aria-current='page'] {
+  nav a[aria-current] {
     color: var(--color-text);
     text-decoration: underline;
     text-decoration-color: var(--color-accent);

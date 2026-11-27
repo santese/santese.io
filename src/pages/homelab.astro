@@ -31,7 +31,7 @@ const lastReviewed = homelab.lastReviewed
   {hardware.length > 0 && (
     <section aria-labelledby="hardware-heading">
       <h2 id="hardware-heading">Hardware</h2>
-      <div class="table-wrap">
+      <div class="table-wrap" role="region" aria-labelledby="hardware-heading" tabindex="0">
         <table>
           <thead>
             <tr>
@@ -108,6 +108,10 @@ const lastReviewed = homelab.lastReviewed
 </BaseLayout>
 
 <style>
+  table {
+    min-width: 32rem;
+  }
+
   .plain {
     list-style: none;
     padding: 0;
