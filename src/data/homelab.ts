@@ -72,7 +72,7 @@ export const homelab: Homelab = {
       ],
       // Specs read from the server's management controller on 2026-11-27; flip to true once
       // the owner has reviewed them.
-      verified: false,
+      verified: true,
     },
     {
       name: 'Dell OptiPlex',
