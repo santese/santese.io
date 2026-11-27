@@ -1,0 +1,27 @@
+{
+  "name": "santese.io",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "lint": "vp check",
+    "fix": "vp check --fix"
+  },
+  "dependencies": {
+    "astro": "7.4.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@astrojs/compiler-rs": "0.5.3",
+    "typescript": "6.0.3",
+    "vite-plus": "1.8.0"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  },
+  "packageManager": "pnpm@12.23.0"
+}

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout>
+  <section aria-labelledby="intro-heading">
+    <h1 id="intro-heading">Hey, I'm Santese.</h1>
+    <p class="lede">
+      I work across software engineering, IT infrastructure, and security. I like building tools
+      that automate tedious work and make systems easier to manage.
+    </p>
+    <p>
+      Lately, I've been building <a href={site.featuredProject.href}>{site.featuredProject.name}</a>
+      , a device management and automation platform for macOS and Windows.
+    </p>
+  </section>
+
+  {site.social.length > 0 && (
+    <section aria-labelledby="elsewhere-heading">
+      <h2 id="elsewhere-heading">Elsewhere</h2>
+      <p>
+        {site.social.map((link, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={link.href} rel="me">
+              {link.label}
+            </a>
+          </>
+        ))}
+      </p>
+    </section>
+  )}
+</BaseLayout>
