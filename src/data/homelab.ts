@@ -70,8 +70,6 @@ export const homelab: Homelab = {
         '8 SATA HDDs, about 98 TB raw',
         'storage and self-hosted workloads',
       ],
-      // Specs read from the server's management controller on 2026-11-27; flip to true once
-      // the owner has reviewed them.
       verified: true,
     },
     {
