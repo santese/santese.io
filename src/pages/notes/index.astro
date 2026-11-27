@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteList from '../../components/NoteList.astro';
+import { getVisibleNotes } from '../../lib/collection';
+import { site } from '../../data/site';
+
+const notes = await getVisibleNotes();
+---
+
+<BaseLayout
+  title="Notes"
+  description="Technical notes on infrastructure, automation, and my homelab."
+>
+  <h1>Notes</h1>
+  <p class="lede">
+    Problems I've solved, decisions I've made, and things I've learned along the way.
+  </p>
+  {notes.length > 0 ? <NoteList notes={notes} /> : <p class="muted">No notes published yet.</p>}
+  <p class="feed">
+    <a href={site.feed}>RSS feed</a>
+  </p>
+</BaseLayout>
+
+<style>
+  .feed {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+  }
+</style>

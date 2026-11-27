@@ -1,0 +1,21 @@
+---
+import { render } from 'astro:content';
+import NoteLayout from '../../layouts/NoteLayout.astro';
+import { getVisibleNotes, type Note } from '../../lib/collection';
+import { toStaticPaths } from '../../lib/notes';
+
+export async function getStaticPaths() {
+  return toStaticPaths(await getVisibleNotes());
+}
+
+interface Props {
+  note: Note;
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+
+<NoteLayout note={note}>
+  <Content />
+</NoteLayout>

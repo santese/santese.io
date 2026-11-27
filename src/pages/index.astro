@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteList from '../components/NoteList.astro';
 import { site } from '../data/site';
+import { getPublishedNotes } from '../lib/collection';
+
+const recentNotes = (await getPublishedNotes()).slice(0, 3);
 ---
 
 <BaseLayout>
@@ -15,6 +19,16 @@ import { site } from '../data/site';
       , a device management and automation platform for macOS and Windows.
     </p>
   </section>
+
+  {recentNotes.length > 0 && (
+    <section aria-labelledby="notes-heading">
+      <h2 id="notes-heading">Recent notes</h2>
+      <NoteList notes={recentNotes} headingLevel="h3" />
+      <p class="all-notes">
+        <a href="/notes/">All notes</a>
+      </p>
+    </section>
+  )}
 
   {site.social.length > 0 && (
     <section aria-labelledby="elsewhere-heading">
@@ -32,3 +46,10 @@ import { site } from '../data/site';
     </section>
   )}
 </BaseLayout>
+
+<style>
+  .all-notes {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+</style>

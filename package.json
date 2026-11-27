@@ -8,10 +8,14 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
+    "test": "vp test run",
     "lint": "vp check",
-    "fix": "vp check --fix"
+    "fix": "vp check --fix",
+    "verify:build": "node scripts/check-build.mjs"
   },
   "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.6",
     "astro": "7.4.13"
   },
   "devDependencies": {

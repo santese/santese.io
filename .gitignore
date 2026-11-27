@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# private note drafts (previewed by `pnpm dev` only; move to src/content/notes/ to publish)
+src/content/drafts/*
+!src/content/drafts/.gitkeep

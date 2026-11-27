@@ -9,17 +9,18 @@ const year = new Date().getUTCFullYear();
     <p class="muted">
       © {year} {site.name}
     </p>
-    {site.social.length > 0 && (
-      <ul aria-label="Elsewhere">
-        {site.social.map((link) => (
-          <li>
-            <a href={link.href} rel="me">
-              {link.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    )}
+    <ul aria-label="Elsewhere">
+      {site.social.map((link) => (
+        <li>
+          <a href={link.href} rel="me">
+            {link.label}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={site.feed}>RSS</a>
+      </li>
+    </ul>
   </div>
 </footer>
 
