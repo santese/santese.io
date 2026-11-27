@@ -90,8 +90,9 @@ export const homelab: Homelab = {
       verified: true,
     },
     {
-      name: 'UniFi AC Pro ×2',
+      name: 'TP-Link Deco BE23 ×3',
       role: 'Wireless access',
+      details: ['Wi-Fi 7, dual-band', 'Access point mode, Ethernet backhaul'],
       verified: true,
     },
     {
@@ -112,7 +113,7 @@ export const homelab: Homelab = {
     },
     {
       name: 'UniFi',
-      purpose: 'Gateway and wireless management',
+      purpose: 'Gateway, firewall and DHCP',
       href: 'https://ui.com/',
       category: 'core',
       verified: true,
